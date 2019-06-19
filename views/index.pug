@@ -1,0 +1,22 @@
+html(lang="ja")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    meta(http-equiv="X-UA-Compatible" content="ie=edge")
+    meta(name="robots" content="noindex")
+    title GTask-API
+  body
+    h1 GTask-API
+    p 下記ボタンからGoogleの認証をしてください。<br>
+    | 完了後、コードが表示されます。<br>
+
+    a(href=url, target="_blank") 認証
+    
+    p そのコードを下記入力欄に貼り付けて、送信ボタンを押して下さい
+    form(method="post", action="/auth")
+      input(name="token")
+      button(type="submit") 送信
+
+    h2 使い方
+    p 上記フォームを送信するとIDを入手出来ます。
+    | /createに対して、id,tasklist,title,notes,dueをpostすると、自分のTasksに登録できます。
