@@ -12,9 +12,24 @@ html(lang="ja")
         max-width: 720px;
         margin: 32px auto;
       }
+      h3 {
+        font-size: 1.5rem;
+        margin-top: 32px;
+      }
   body
     h1
       img(src="gtask-api.png" style="max-width: 100%; margin-bottom: 16px;")
 
-    p 認証に失敗しました。もう一度お試しください。
+    h2 プライバシーポリシー
+    h3 当サービスの機能
+    p 当サービスは、Google Tasks APIを用いて、REST APIで自分のタスクを追加する為のサービスです。
+
+    h3 情報の取得について
+    p 当サービスでは、Google Tasks APIを利用して、Google Tasksのタスクリストを取得します。<br>
+    | これを除くデータは一切取得しません。
+
+    h3 情報の利用について
+    p タスクリストは、タスクを登録するリストを選択するためのIDを取得する為にのみ使用します。
+
+    br
     a(href="/") 戻る

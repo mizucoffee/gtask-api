@@ -10,7 +10,7 @@ const bodyParser = require('body-parser')
 const uniqid = require('uniqid')
 
 if (!fs.pathExistsSync('credentials.json')) {
-    console.error('ERROR: credentials.jsonが見つかりません。READMEを参考に入手してください。')
+    console.error('ERROR: Not found credentials.json')
     process.exit(1)
 }
 
@@ -26,6 +26,7 @@ app.use(bodyParser.urlencoded({
     extended: true
 }))
 app.set('view engine', 'pug')
+app.use(express.static('public'))
 app.listen(3000, () => {})
 
 app.get('/', (req, res) => {
@@ -94,6 +95,10 @@ app.post('/create', async (req, res) => {
         console.log(e)
         res.status(400).send('Request Error')
     }
+})
+
+app.get('/privacy', (req, res) => {
+    res.render('privacy')
 })
 
 async function refreshOAuth2Client(t) {

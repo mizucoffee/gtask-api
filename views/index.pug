@@ -4,19 +4,64 @@ html(lang="ja")
     meta(name="viewport" content="width=device-width, initial-scale=1.0")
     meta(http-equiv="X-UA-Compatible" content="ie=edge")
     meta(name="robots" content="noindex")
+    link(rel='stylesheet', href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css', integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T', crossorigin='anonymous')
+    script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js', integrity='sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM', crossorigin='anonymous')
     title GTask-API
+    style.
+      body {
+        max-width: 720px;
+        margin: 32px auto;
+      }
   body
-    h1 GTask-API
-    p 下記ボタンからGoogleの認証をしてください。<br>
-    | 完了後、コードが表示されます。<br>
+    h1
+      img(src="gtask-api.png" style="max-width: 100%; margin-bottom: 16px;")
 
-    a(href=url, target="_blank") 認証
+    h2 About
+    p GTask-APIは、Google Tasksの追加をREST APIから呼び出す為のサービスです。
+    | 
+
+    h2 Register
+    p 下記ボタンからGoogleの認証をしてください。完了後、コードが表示されます。<br>
+    p
+      a(href=url, target="_blank")
+        img(src="/sign_in_with_google.png" style="margin-left: 14px;")
     
-    p そのコードを下記入力欄に貼り付けて、送信ボタンを押して下さい
-    form(method="post", action="/auth")
-      input(name="token")
-      button(type="submit") 送信
+    p そのコードを下記入力欄に貼り付けて、送信ボタンを押して下さい。
+    form.form-inline(method="post", action="/auth")
+      div.form-group.mx-sm-3.mb-2
+        input.form-control(name="token" placeholder="Token")
+      button.btn.btn-primary.mb-2(type="submit") 送信
 
-    h2 使い方
-    p 上記フォームを送信するとIDを入手出来ます。
-    | /createに対して、id,tasklist,title,notes,dueをpostすると、自分のTasksに登録できます。
+    h2 API
+    p 上記フォームを送信するとIDが表示されます。下の通りにPOSTするとTaskを登録出来ます。
+
+    p  POST https://gtask.mizucoffee.net/create
+    table.table
+      thead
+        tr
+          th key
+          th value
+          th 必須or任意
+      tbody
+        tr
+          td id
+          td 自分のID
+          td 必須
+        tr
+          td tasklist
+          td タスクリスト名
+          td 必須
+        tr
+          td title
+          td タスク名
+          td 必須
+        tr
+          td notes
+          td タスク概要
+          td 任意
+        tr
+          td due
+          td 締切日 - 原則としてGoogle Tasksが対応しているフォーマットのみですが、iOS Reminderが対応しているフォーマットにも対応しています。
+          td 任意
+    
+    a(href="/privacy") プライバシーポリシー
