@@ -35,6 +35,13 @@ app.get('/', (req, res) => {
         res.redirect('/en/')
 })
 
+app.get('/privacy', (req, res) => {
+    if(req.acceptsLanguages('ja'))
+        res.redirect('/ja/privacy')
+    else
+        res.redirect('/en/privacy')
+})
+
 app.get('/:lang(ja|en)/', (req, res) => {
     res.render(`${req.params.lang}/index`, {
         url: oAuth2Client.generateAuthUrl({
