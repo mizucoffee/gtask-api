@@ -76,7 +76,7 @@ app.post('/create', async (req, res) => {
             })
         }
 
-        if (due.match(/^\d{2}\/\d{2}\/\d{4} at \d{2}:\d{2}(am|pm)$/)) {
+        if (due && due.match(/^\d{2}\/\d{2}\/\d{4} at \d{2}:\d{2}(am|pm)$/)) {
             const data = due.split(' ')[0].split('/')
             due = `${data[2]}-${data[0]}-${data[1]}T00:00:00Z`
         }
