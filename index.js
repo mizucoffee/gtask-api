@@ -7,8 +7,7 @@ const fs = require('fs-extra')
 const google = require('googleapis').google
 const app = express()
 const bodyParser = require('body-parser')
-const uniqid = require('uniqid')
-
+const uniq = require('unique-string')
 if (!fs.pathExistsSync('credentials.json')) {
     console.error('ERROR: Not found credentials.json')
     process.exit(1)
@@ -30,7 +29,14 @@ app.use(express.static('public'))
 app.listen(3000, () => {})
 
 app.get('/', (req, res) => {
-    res.render('index', {
+    if(req.acceptsLanguages('ja'))
+        res.redirect('/ja/')
+    else
+        res.redirect('/en/')
+})
+
+app.get('/:lang(ja|en)/', (req, res) => {
+    res.render(`${req.params.lang}/index`, {
         url: oAuth2Client.generateAuthUrl({
             access_type: 'offline',
             scope: ['https://www.googleapis.com/auth/tasks'],
@@ -38,15 +44,15 @@ app.get('/', (req, res) => {
     })
 })
 
-app.post('/auth', async (req, res) => {
+app.post('/:lang(ja|en)/auth', async (req, res) => {
     try {
-        const token = await oAuth2Client.getToken(req.body.token)
-        const id = uniqid()
+        const token = await oAuth2Client.getToken(req.body.code)
+        const id = uniq()
         store.set(id, JSON.stringify(token.tokens))
-        res.send(`ID: ${id}`)
+        res.render(`${req.params.lang}/success`, {id})
     } catch (e) {
         console.log(e)
-        res.render('fail')
+        res.render(`${req.params.lang}/fail`)
     }
 })
 
@@ -78,7 +84,7 @@ app.post('/create', async (req, res) => {
 
         if (due && due.match(/^\d{2}\/\d{2}\/\d{4} at \d{2}:\d{2}(am|pm)$/)) {
             const data = due.split(' ')[0].split('/')
-            due = `${data[2]}-${data[0]}-${data[1]}T00:00:00Z`
+            due = `${data[2]}/-${data[0]}-${data[1]}T00:00:00Z`
         }
 
         const tasklistId = (await tasks.tasklists.list()).data.items.filter(i => i.title == tasklist)[0].id
@@ -97,8 +103,8 @@ app.post('/create', async (req, res) => {
     }
 })
 
-app.get('/privacy', (req, res) => {
-    res.render('privacy')
+app.get('/:lang(ja|en)/privacy', (req, res) => {
+    res.render(`${req.params.lang}/privacy`)
 })
 
 async function refreshOAuth2Client(t) {

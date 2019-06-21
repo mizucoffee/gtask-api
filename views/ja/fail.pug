@@ -10,11 +10,20 @@ html(lang="ja")
     style.
       body {
         max-width: 720px;
-        margin: 32px auto;
+        margin: 16px auto;
+        padding: 0 16px;
       }
   body
     h1
-      img(src="gtask-api.png" style="max-width: 100%; margin-bottom: 16px;")
+      a(href="/ja")
+        img(src="/gtask-api.png" style="max-width: 100%; margin-bottom: 16px;")
 
-    p 認証に失敗しました。もう一度お試しください。
-    a(href="/") 戻る
+    div(style="text-align: center;")
+      p 認証に失敗しました。もう一度お試しください。
+
+    div(style="text-align: center; margin-bottom: 16px;")
+      a(href="/ja") 戻る
+
+    div(style="text-align: center;")
+      a(href="/ja/privacy") Privacy Policy
+      p Copylight&copy;2019 mizucoffee all rights reserved.

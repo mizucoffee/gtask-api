@@ -1,0 +1,78 @@
+html(lang="ja")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    meta(http-equiv="X-UA-Compatible" content="ie=edge")
+    meta(name="robots" content="noindex")
+    link(rel='stylesheet', href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css', integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T', crossorigin='anonymous')
+    script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js', integrity='sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM', crossorigin='anonymous')
+    title GTask-API
+    style.
+      body {
+        max-width: 720px;
+        margin: 16px auto;
+        padding: 0 16px;
+      }
+  body
+    h1
+      a(href="/ja")
+        img(src="/gtask-api.png" style="max-width: 100%; margin-bottom: 16px;")
+
+    div(style="text-align: center; margin: 16px 0;")
+      span JA
+      span &nbsp;/&nbsp;
+      span
+        a(href="/en") EN
+
+    h2 About
+    p GTask-APIは、簡単なAPIでGoogle Tasksにタスクを追加する為のサービスです。
+    | 
+
+    h2 Register
+    p 下のボタンからGoogleの認証をしてください。完了後、コードが表示されます。<br>
+    p
+      a(href=url, target="_blank")
+        img(src="/sign_in_with_google.png" style="margin-left: 14px;")
+    
+    p そのコードを下の入力欄に貼り付けて、送信ボタンを押して下さい。
+    form.form-inline(method="post", action="/ja/auth")
+      div.form-group.mx-sm-3.mb-2
+        input.form-control(name="code" placeholder="Code")
+      button.btn.btn-primary.mb-2(type="submit") 送信
+    p 成功すると、あなたのIDが表示されます。これはAPIを呼び出す時に使用します。IDは他人に教えないでください。このIDは何度でも生成する事が出来ますが、毎回違うコードが生成されます。
+
+    h2 API
+    div(style="text-align: center; margin-bottom: 16px;")
+      p POST https://gtask.mizucoffee.net/create<br>Content-Type: application/x-www-form-urlencoded
+  
+    table.table
+      thead
+        tr
+          th key
+          th value
+          th 必須
+      tbody
+        tr
+          td id
+          td 自分のID
+          td Yes
+        tr
+          td tasklist
+          td タスクリスト名
+          td Yes
+        tr
+          td title
+          td タスク名
+          td Yes
+        tr
+          td notes
+          td タスク概要
+          td No
+        tr
+          td due
+          td 締切日 - GoogleとiOSの日時形式に対応
+          td No
+    
+    div(style="text-align: center;")
+      a(href="/ja/privacy") Privacy Policy
+      p Copylight&copy;2019 mizucoffee all rights reserved.

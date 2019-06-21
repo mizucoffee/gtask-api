@@ -1,0 +1,54 @@
+html(lang="ja")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    meta(http-equiv="X-UA-Compatible" content="ie=edge")
+    meta(name="robots" content="noindex")
+    link(rel='stylesheet', href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css', integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T', crossorigin='anonymous')
+    script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js', integrity='sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM', crossorigin='anonymous')
+    title GTask-API
+    style.
+      body {
+        max-width: 720px;
+        margin: 16px auto;
+        padding: 0 16px;
+      }
+      h3 {
+        font-size: 1.5rem;
+        margin-top: 32px;
+      }
+  body
+    h1
+      a(href="/ja")
+        img(src="/gtask-api.png" style="max-width: 100%; margin-bottom: 16px;")
+
+    div(style="text-align: center; margin: 16px 0;")
+      span JA
+      span &nbsp;/&nbsp;
+      span
+        a(href="/en/privacy") EN
+    
+    h2 プライバシーポリシー
+    h3 このプライバシーポリシーについて
+    p このプライバシーポリシーは、GTask-API（以下、当サービス）を使用した場合の個人情報及びデータの取り扱いについてまとめたものです。
+
+    h3 個人情報
+    p 当サービスでは、個人情報を収集しません。
+    | 個人情報を取得するために、Google APIを呼び出す事は一切ありません。連携したGoogleアカウントの情報が開発者に送信されることもありません。
+    | このプライバシーポリシーには個人情報の共有についての項目はありません。個人情報を取得しないので共有する必要がない為です。
+
+    h3 データへのアクセス
+    p 当サービスでは、2つのGoogle Tasks APIを呼び出します。1つ目は、タスクを追加する為に、タスクを追加するAPIを呼び出します。2つ目は、タスクを追加する対象のタスクリストを選択する為に、タスクリスト一覧を取得します。当サービスでは、これら以外のGoogle APIを呼び出す事はありません。
+
+    h3 Cookie
+    p Cookieは一切使用していません。
+
+    p このプライバシーポリシーに関する質問等がある場合は、contact@mizucoffee.netまでご連絡ください。
+
+    br
+    div(style="text-align: center; margin-bottom: 16px;")
+      a(href="/") Back
+
+    div(style="text-align: center;")
+      a(href="/ja/privacy") Privacy Policy
+      p Copylight&copy;2019 mizucoffee all rights reserved.

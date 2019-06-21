@@ -1,0 +1,77 @@
+html(lang="ja")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    meta(http-equiv="X-UA-Compatible" content="ie=edge")
+    meta(name="robots" content="noindex")
+    link(rel='stylesheet', href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css', integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T', crossorigin='anonymous')
+    script(src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js', integrity='sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM', crossorigin='anonymous')
+    title GTask-API
+    style.
+      body {
+        max-width: 720px;
+        margin: 16px auto;
+        padding: 0 16px;
+      }
+  body
+    h1
+      a(href="/en")
+        img(src="/gtask-api.png" style="max-width: 100%; margin-bottom: 16px;")
+
+    div(style="text-align: center; margin: 16px 0;")
+      span
+        a(href="/ja") JA
+      span &nbsp;/&nbsp;
+      span EN
+
+    h2 About
+    p GTask-API is a Web service for adding tasks to Google Tasks with a simple API.
+
+    h2 Register
+    p Please click the button below to authenticate with Google. When complete, the code is displayed.<br>
+    p
+      a(href=url, target="_blank")
+        img(src="/sign_in_with_google.png" style="margin-left: 14px;")
+    
+    p Fill in the code in the form below and click the Submit button.
+    form.form-inline(method="post", action="/en/auth")
+      div.form-group.mx-sm-3.mb-2
+        input.form-control(name="code" placeholder="Code")
+      button.btn.btn-primary.mb-2(type="submit") Submit
+    
+    p If successful, your ID will be displayed. This is used when calling the API. Don't tell anyone. This ID can be issued many times, but a different ID is generated each time.
+
+    h2 API
+    div(style="text-align: center; margin-bottom: 16px;")
+      p POST https://gtask.mizucoffee.net/create<br>Content-Type: application/x-www-form-urlencoded
+    table.table
+      thead
+        tr
+          th key
+          th value
+          th Required
+      tbody
+        tr
+          td id
+          td Your ID
+          td Yes
+        tr
+          td tasklist
+          td Tasklist Name
+          td Yes
+        tr
+          td title
+          td Task Name
+          td Yes
+        tr
+          td notes
+          td Task Description
+          td No
+        tr
+          td due
+          td Due - Compatible with Google and iOS date formats.
+          td No
+    
+    div(style="text-align: center;")
+      a(href="/en/privacy") Privacy Policy
+      p Copylight&copy;2019 mizucoffee all rights reserved.

@@ -10,7 +10,8 @@ html(lang="ja")
     style.
       body {
         max-width: 720px;
-        margin: 32px auto;
+        margin: 16px auto;
+        padding: 0 16px;
       }
       h3 {
         font-size: 1.5rem;
@@ -18,9 +19,16 @@ html(lang="ja")
       }
   body
     h1
-      img(src="gtask-api.png" style="max-width: 100%; margin-bottom: 16px;")
+      a(href="/en")
+        img(src="/gtask-api.png" style="max-width: 100%; margin-bottom: 16px;")
 
-    h2 Privacy Policy - English
+    div(style="text-align: center; margin: 16px 0;")
+      span
+        a(href="/ja/privacy") JA
+      span &nbsp;/&nbsp;
+      span EN
+
+    h2 Privacy Policy
 
     h3 About
     p This Privacy Policy summarizes the handling of personal information and data when using the GTask-API.
@@ -39,24 +47,9 @@ html(lang="ja")
     p If you have any questions regarding this privacy policy, please contact us at contact@mizucoffee.net.
 
     br
-    hr
+    div(style="text-align: center; margin-bottom: 16px;")
+      a(href="/") Back
 
-    h2 Privacy Policy - Japanese
-    h3 このプライバシーポリシーについて
-    p このプライバシーポリシーは、GTask-API（以下、当サービス）を使用した場合の個人情報及びデータの取り扱いについてまとめたものです。
-
-    h3 個人情報
-    p 当サービスでは、個人情報を収集しません。
-    | 個人情報を取得するために、Google APIを呼び出す事は一切ありません。連携したGoogleアカウントの情報が開発者に送信されることもありません。
-    | このプライバシーポリシーには個人情報の共有についての項目はありません。個人情報を取得しないので共有する必要がない為です。
-
-    h3 データへのアクセス
-    p 当サービスでは、2つのGoogle Tasks APIを呼び出します。1つ目は、タスクを追加する為に、タスクを追加するAPIを呼び出します。2つ目は、タスクを追加する対象のタスクリストを選択する為に、タスクリスト一覧を取得します。当サービスでは、これら以外のGoogle APIを呼び出す事はありません。
-
-    h3 Cookie
-    p Cookieは一切使用していません。
-
-    p このプライバシーポリシーに関する質問等がある場合は、contact@mizucoffee.netまでご連絡ください。
-
-    br
-    a(href="/") Back
+    div(style="text-align: center;")
+      a(href="/ja/privacy") Privacy Policy
+      p Copylight&copy;2019 mizucoffee all rights reserved.
