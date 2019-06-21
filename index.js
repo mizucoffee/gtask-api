@@ -89,9 +89,9 @@ app.post('/create', async (req, res) => {
             })
         }
 
-        if (due && due.match(/^\d{2}\/\d{2}\/\d{4} at \d{2}:\d{2}(am|pm)$/)) {
+        if (due && due.match(/^\d{2}\/\d{2}\/\d{4} at \d{1,2}:\d{1,2}(am|pm)$/)) {
             const data = due.split(' ')[0].split('/')
-            due = `${data[2]}/-${data[0]}-${data[1]}T00:00:00Z`
+            due = `${data[2]}-${data[0]}-${data[1]}T00:00:00Z`
         }
 
         const tasklistId = (await tasks.tasklists.list()).data.items.filter(i => i.title == tasklist)[0].id
