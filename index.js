@@ -73,7 +73,7 @@ app.post('/create', async (req, res) => {
     const title = req.body.title
     const notes = req.body.notes
     const tasklist = req.body.tasklist
-    let due = req.body.due
+    let due = req.body.due == '' ? null : req.body.due
 
     try {
         const tasks = google.tasks({

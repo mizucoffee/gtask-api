@@ -71,6 +71,25 @@ html(lang="ja")
           td due
           td Due - Compatible with Google and iOS date formats.
           td No
+
+    h2 Test
+    form(action="/create" method="post")
+      .form-group
+        label(for="form-id") ID
+        input.form-control#form-id(type="text" name="id" placeholder="<your id>")
+      .form-group
+        label(for="form-tl") Tasklist
+        input.form-control#form-tl(type="text" name="tasklist" placeholder="example list")
+      .form-group
+        label(for="form-title") Title
+        input.form-control#form-title(type="text" name="title")
+      .form-group
+        label(for="form-notes") Notes
+        input.form-control#form-notes(type="text" name="notes")
+      .form-group
+        label(for="form-due") Due
+        input.form-control#form-due(type="text" name="due" placeholder="ex: 12/24/2019 at 15:00pm")
+      button.btn.btn-primary(type="submit") Submit
     
     div(style="text-align: center;")
       a(href="/en/privacy") Privacy Policy
