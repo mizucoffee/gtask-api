@@ -29,14 +29,14 @@ app.use(express.static('public'))
 app.listen(3000, () => {})
 
 app.get('/', (req, res) => {
-    if(req.acceptsLanguages('ja'))
+    if (req.acceptsLanguages('ja'))
         res.redirect('/ja/')
     else
         res.redirect('/en/')
 })
 
 app.get('/privacy', (req, res) => {
-    if(req.acceptsLanguages('ja'))
+    if (req.acceptsLanguages('ja'))
         res.redirect('/ja/privacy')
     else
         res.redirect('/en/privacy')
@@ -51,19 +51,19 @@ app.get('/:lang(ja|en)/', (req, res) => {
     })
 })
 
-app.post('/:lang(ja|en)/auth', async (req, res) => {
+app.post('/:lang(ja|en)/auth', async(req, res) => {
     try {
         const token = await oAuth2Client.getToken(req.body.code)
         const id = uniq()
         store.set(id, JSON.stringify(token.tokens))
-        res.render(`${req.params.lang}/success`, {id})
+        res.render(`${req.params.lang}/success`, { id })
     } catch (e) {
         console.log(e)
         res.render(`${req.params.lang}/fail`)
     }
 })
 
-app.post('/create', async (req, res) => {
+app.post('/create', async(req, res) => {
     console.log(req.body)
     if (!req.body.hasOwnProperty('id')) return res.status(400).send('Invalid Request')
     if (!req.body.hasOwnProperty('title') || req.body.title == '') return res.status(400).send('Invalid Request')
@@ -91,6 +91,11 @@ app.post('/create', async (req, res) => {
 
         if (due && due.match(/^\d{2}\/\d{2}\/\d{4} at \d{1,2}:\d{1,2}(am|pm)$/)) {
             const data = due.split(' ')[0].split('/')
+            due = `${data[2]}-${data[0]}-${data[1]}T00:00:00Z`
+        }
+
+        if (due && due.match(/^\d{2}\/\d{2}\/\d{4}$/)) {
+            const data = due.split('/')
             due = `${data[2]}-${data[0]}-${data[1]}T00:00:00Z`
         }
 
