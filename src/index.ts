@@ -1,18 +1,16 @@
-const Store = require("data-store");
-const store = new Store({
-  path: "token.json",
-});
-const express = require("express");
-const fs = require("fs-extra");
-const google = require("googleapis").google;
-const app = express();
-const bodyParser = require("body-parser");
-const uniq = require("unique-string");
+import express from "express";
+import { google } from "googleapis";
+import { urlencoded } from "body-parser";
+import uniq from "unique-string";
+import { PrismaClient } from '@prisma/client'
+
 if (!process.env.GOOLGE_CREDENTIALS) {
   console.error("ERROR: Not found GOOGLE_CREDENTIALS");
   process.exit(1);
 }
 
+const prisma = new PrismaClient()
+const app = express();
 const credentials = JSON.parse(process.env.GOOLGE_CREDENTIALS);
 const { client_secret, client_id, redirect_uris } = credentials.installed;
 const oAuth2Client = new google.auth.OAuth2(
@@ -21,11 +19,7 @@ const oAuth2Client = new google.auth.OAuth2(
   redirect_uris[0]
 );
 
-app.use(
-  bodyParser.urlencoded({
-    extended: true,
-  })
-);
+app.use(urlencoded({extended: true}));
 app.set("view engine", "pug");
 app.use(express.static("public"));
 app.use((req, res, next) => {
@@ -52,8 +46,8 @@ app.get("/:lang(ja|en)/privacy", (req, res) => res.render(`${req.params.lang}/pr
 app.post("/:lang(ja|en)/auth", async (req, res) => {
   try {
     const token = await oAuth2Client.getToken(req.body.code);
-    const id = uniq();
-    store.set(id, JSON.stringify(token.tokens));
+    const id = uniq()
+    prisma.googleToken.create({ data: { id, ...token.tokens } })
     res.render(`${req.params.lang}/success`, { id });
   } catch (e) {
     console.log(e);
