@@ -1,23 +1,31 @@
-import express from "express";
+import express, {Request} from "express";
 import { google } from "googleapis";
 import { urlencoded } from "body-parser";
-import uniq from "unique-string";
-import { PrismaClient } from '@prisma/client'
+import uniqid from 'uniqid'
+import { PrismaClient, GoogleToken } from '@prisma/client'
 
-if (!process.env.GOOLGE_CREDENTIALS) {
+if (!process.env.GOOGLE_CREDENTIALS) {
   console.error("ERROR: Not found GOOGLE_CREDENTIALS");
   process.exit(1);
 }
 
 const prisma = new PrismaClient()
 const app = express();
-const credentials = JSON.parse(process.env.GOOLGE_CREDENTIALS);
+const credentials = JSON.parse(process.env.GOOGLE_CREDENTIALS);
 const { client_secret, client_id, redirect_uris } = credentials.installed;
 const oAuth2Client = new google.auth.OAuth2(
   client_id,
   client_secret,
   redirect_uris[0]
 );
+
+declare global {
+  namespace Express {
+    interface Request {
+      lang?: string
+    }
+  }
+}
 
 app.use(urlencoded({extended: true}));
 app.set("view engine", "pug");
@@ -46,8 +54,15 @@ app.get("/:lang(ja|en)/privacy", (req, res) => res.render(`${req.params.lang}/pr
 app.post("/:lang(ja|en)/auth", async (req, res) => {
   try {
     const token = await oAuth2Client.getToken(req.body.code);
-    const id = uniq()
-    prisma.googleToken.create({ data: { id, ...token.tokens } })
+    const id = uniqid()
+    await prisma.googleToken.create({ data: {
+      id,
+      access_token: `${token.tokens.access_token}`,
+      refresh_token: `${token.tokens.refresh_token}`,
+      scope: `${token.tokens.scope}`,
+      token_type: `${token.tokens.token_type}`,
+      expiry_date: token.tokens.expiry_date || 0
+    }})
     res.render(`${req.params.lang}/success`, { id });
   } catch (e) {
     console.log(e);
@@ -62,30 +77,22 @@ app.post("/create", async (req, res) => {
     return res.status(400).send("Invalid Request");
   if (!req.body.hasOwnProperty("tasklist") || req.body.tasklist == "")
     return res.status(400).send("Invalid Request");
-  if (!store.has(req.body.id)) return res.status(404).send("Not Found");
+
+  const token = await prisma.googleToken.findUnique({where: {id: req.body.id}})
+  if (token == null) return res.status(404).send("Not Found");
 
   const title = req.body.title;
   const notes = req.body.notes;
-  const tasklist = req.body.tasklist;
   let due = req.body.due == "" ? null : req.body.due;
 
   try {
     const tasks = google.tasks({
       version: "v1",
-      auth: await refreshOAuth2Client(JSON.parse(store.get(req.body.id))),
+      auth: await refreshOAuth2Client(token),
     });
-
-    if (
-      (await tasks.tasklists.list()).data.items.filter(
-        (i) => i.title == tasklist
-      ).length == 0
-    ) {
-      await tasks.tasklists.insert({
-        resource: {
-          title: tasklist,
-        },
-      });
-    }
+    const tasklists = (await tasks.tasklists.list()).data.items || []
+    let tasklist = tasklists.find(t => t.title == req.body.tasklist)
+    if(!tasklist) tasklist = (await tasks.tasklists.insert({ requestBody: { title: req.body.tasklist } })).data;
 
     if (due && due.match(/^\d{2}\/\d{2}\/\d{4} at \d{1,2}:\d{1,2}(am|pm)$/)) {
       const data = due.split(" ")[0].split("/");
@@ -97,12 +104,9 @@ app.post("/create", async (req, res) => {
       due = `${data[2]}-${data[0]}-${data[1]}T00:00:00Z`;
     }
 
-    const tasklistId = (await tasks.tasklists.list()).data.items.filter(
-      (i) => i.title == tasklist
-    )[0].id;
     await tasks.tasks.insert({
-      tasklist: tasklistId,
-      resource: {
+      tasklist: `${tasklist.id}`,
+      requestBody: {
         title,
         notes,
         due,
@@ -115,8 +119,7 @@ app.post("/create", async (req, res) => {
   }
 });
 
-
-async function refreshOAuth2Client(t) {
+async function refreshOAuth2Client(t: GoogleToken) {
   const oAuth2Client = new google.auth.OAuth2(
     client_id,
     client_secret,

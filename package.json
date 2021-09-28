@@ -5,19 +5,34 @@
   "repository": "https://github.com/mizucoffee/gtask-api.git",
   "author": "Ritsuki Goto <develop@mizucoffee.net>",
   "license": "MIT",
+  "scripts": {
+    "build": "npm-run-all clean tsc",
+    "clean": "rimraf dist/*",
+    "tsc": "tsc",
+    "dev": "ts-node src",
+    "dev:watch": "ts-node-dev --respawn src",
+    "start": "node dist",
+    "db:prepare": "npm-run-all db:reset db:generate db:migrate",
+    "db:reset": "prisma migrate reset",
+    "db:migrate": "prisma migrate deploy",
+    "db:generate": "prisma generate"
+  },
   "dependencies": {
     "@prisma/client": "^3.1.1",
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
     "googleapis": "^87.0.0",
     "pug": "^3.0.2",
-    "unique-string": "^3.0.0"
+    "uniqid": "^5.4.0"
   },
   "devDependencies": {
     "@types/body-parser": "^1.19.1",
     "@types/express": "^4.17.13",
     "@types/node": "^16.10.1",
+    "@types/uniqid": "^5.3.1",
+    "npm-run-all": "^4.1.5",
     "prisma": "^3.1.1",
+    "rimraf": "^3.0.2",
     "ts-node": "^10.2.1",
     "ts-node-dev": "^1.1.8",
     "typescript": "^4.4.3"

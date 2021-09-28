@@ -9,11 +9,11 @@ generator client {
 
 model GoogleToken {
   id  String  @id
-  access_token  String?
-  refresh_token  String?
-  scope  String?
-  token_type  String?
-  expiry_date  Int?
+  access_token  String
+  refresh_token  String
+  scope  String
+  token_type  String
+  expiry_date  Int
 }
 
 enum Role {
