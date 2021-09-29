@@ -13,7 +13,7 @@ model GoogleToken {
   refresh_token  String
   scope  String
   token_type  String
-  expiry_date  Int
+  expiry_date  BigInt @db.BigInt
 }
 
 enum Role {
