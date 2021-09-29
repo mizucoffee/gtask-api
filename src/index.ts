@@ -126,7 +126,10 @@ async function refreshOAuth2Client(t: GoogleToken) {
     redirect_uris[0]
   );
 
-  oAuth2Client.setCredentials(t);
+  oAuth2Client.setCredentials({
+    ...t,
+    expiry_date: Number(t.expiry_date)
+  });
   const token = await oAuth2Client.refreshAccessToken();
   oAuth2Client.setCredentials(token.credentials);
 
